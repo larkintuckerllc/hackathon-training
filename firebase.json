@@ -1,0 +1,26 @@
+{
+  "database": {
+    "rules": "database.rules.json"
+  },
+  "hosting": {
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "headers": [{
+      "source": "**/*.@(html)",
+      "headers": [{
+        "key": "Cache-Control",
+        "value": "no-cache, no-store, must-revalidate"
+      }]
+    }, {
+      "source": "**/*.@(jpg|jpeg|gif|png|js|css|map)",
+      "headers" : [{
+        "key": "Cache-Control",
+        "value": "public, max-age=31536000"
+      }]
+    }]
+  }
+}

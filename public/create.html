@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Reading List</title>
+    <title>Create</title>
   </head>
   <body>
     <div id="not_auth" style="display: none;">
@@ -15,6 +15,10 @@
         <span id="auth__name"></span>
       </div>
       <button id="auth__logout">Logout</button>
+      <form id="auth__create">
+        <input type="text" id="auth__create__name"></input>
+        <input type="submit" value="Create"></input>
+      </form>
       <ul id="auth__folders">
       </ul>
     </div>
@@ -41,6 +45,8 @@
         var nameEl = document.getElementById('auth__name');
         var logoutEl = document.getElementById('auth__logout');
         var foldersEl = document.getElementById('auth__folders');
+        var createEl = document.getElementById('auth__create');
+        var createNameEl = document.getElementById('auth__create__name');
         // HANDLE AUTHORIZATION CHANGES
         auth.onAuthStateChanged(function(user) {
           if (user) {
@@ -63,6 +69,16 @@
         logoutEl.addEventListener('click', function() {
           auth.signOut();
         });
+        // CREATE
+        createEl.addEventListener('submit', function(e) {
+          e.preventDefault();
+          var name = createNameEl.value;
+          createNameEl.value = '';
+          foldersRef.push({
+            name: name,
+          });
+        });
+        // END CREATE
         // LISTEN FOR DATABASE CHANGES
         function startListening() {
           foldersRef.on('child_added', function(data) {

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create</title>
+  </head>
+  <body>
+    <div id="not_auth" style="display: none;">
+      <button id="not_auth__login">Login</button>
+    </div>
+    <div id="auth" style="display: none;">
+      <div>
+        Welcome
+        <span id="auth__name"></span>
+      </div>
+      <button id="auth__logout">Logout</button>
+      <form id="auth__create">
+        <input type="text" id="auth__create__name"></input>
+        <input type="submit" value="Create"></input>
+      </form>
+      <ul id="auth__folders">
+      </ul>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+    <script>
+      // FIREBASE INITIALIZATION
+      var config = {
+        apiKey: 'AIzaSyBvrbcKllIUcRKR_IxZ_7FPPm18I-csfJc',
+        authDomain: 'training-26be6.firebaseapp.com',
+        databaseURL: 'https://training-26be6.firebaseio.com',
+        projectId: 'training-26be6',
+        storageBucket: 'training-26be6.appspot.com',
+        messagingSenderId: '337643403264'
+      };
+      firebase.initializeApp(config);
+      // END FIREBASE INITIALIZATION
+      document.addEventListener('DOMContentLoaded', function() {
+        var auth = firebase.auth();
+        var database = firebase.database();
+        var foldersRef = database.ref('folders');
+        var notAuthEl = document.getElementById('not_auth');
+        var loginEl = document.getElementById('not_auth__login');
+        var authEl = document.getElementById('auth');
+        var nameEl = document.getElementById('auth__name');
+        var logoutEl = document.getElementById('auth__logout');
+        var foldersEl = document.getElementById('auth__folders');
+        var createEl = document.getElementById('auth__create');
+        var createNameEl = document.getElementById('auth__create__name');
+        // HANDLE AUTHORIZATION CHANGES
+        auth.onAuthStateChanged(function(user) {
+          if (user) {
+            startListening();
+            nameEl.innerHTML = user.displayName;
+            notAuthEl.style.display = 'none';
+            authEl.style.display = 'block';
+          } else {
+            stopListening();
+            nameEl.innerHTML = '';
+            authEl.style.display = 'none';
+            notAuthEl.style.display = 'block';
+          }
+        });
+        // END HANDLE AUTHORIZATION CHANGES
+        loginEl.addEventListener('click', function() {
+          var provider = new firebase.auth.FacebookAuthProvider();
+          auth.signInWithRedirect(provider);
+        });
+        logoutEl.addEventListener('click', function() {
+          auth.signOut();
+        });
+        // CREATE
+        createEl.addEventListener('submit', function(e) {
+          e.preventDefault();
+          var name = createNameEl.value;
+          createNameEl.value = '';
+          foldersRef.push({
+            name: name,
+          });
+        });
+        // END CREATE
+        // LISTEN FOR DATABASE CHANGES
+        function startListening() {
+          foldersRef.on('child_added', function(data) {
+            var folder = data.val();
+            var folderEl = document.createElement('li');
+            folderEl.appendChild(document.createTextNode(folder.name));
+            foldersEl.appendChild(folderEl);
+          });
+        }
+        // END LISTEN FOR DATABASE CHANGES
+        function stopListening() {
+          foldersRef.off('child_added');
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,31 +1,49 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
-import {
-  compose,
-  pure,
-  setDisplayName,
-  setPropTypes,
-} from 'recompose';
+import * as fromAuthDone from '../../ducks/authDone';
 import * as fromAuthenticated from '../../ducks/authenticated';
+import initializeFirebase from '../../apis/initializeFirebase';
+import Authenticated from './Authenticated';
+import Loading from './Loading';
+import Login from './Login';
 
-const enhance = compose(
-  connect(
-    state => ({
-      authenticated: fromAuthenticated.getAuthenticated(state),
-    }),
-    {
-      setAuthenticated: fromAuthenticated.setAuthenticated,
-    },
-  ),
-  pure,
-  setPropTypes({
-    authenticated: PropTypes.bool.isRequired,
-    setAuthenticated: PropTypes.func.isRequired,
+class App extends Component {
+  componentDidMount() {
+    const { auth, login, logout } = this.props;
+    initializeFirebase(
+      () => {
+        auth();
+        login();
+      },
+      () => {
+        auth();
+        logout();
+      },
+    );
+  }
+  render() {
+    const { authDone, authenticated } = this.props;
+    if (!authDone) return <Loading />;
+    if (!authenticated) return <Login />;
+    return <Authenticated />;
+  }
+}
+App.propTypes = {
+  auth: PropTypes.func.isRequired,
+  authDone: PropTypes.bool.isRequired,
+  authenticated: PropTypes.bool.isRequired,
+  login: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
+};
+export default connect(
+  state => ({
+    authDone: fromAuthDone.getAuthDone(state),
+    authenticated: fromAuthenticated.getAuthenticated(state),
   }),
-  setDisplayName('App'),
-)
-const App = enhance(({ authenticated }) => (
-  authenticated ? <div>Authenticated</div> : <div>NOT Authenticated</div>
-));
-export default App;
+  {
+    auth: fromAuthDone.auth,
+    login: fromAuthenticated.login,
+    logout: fromAuthenticated.logout,
+  },
+)(App);

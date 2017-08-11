@@ -13,10 +13,12 @@ class App extends Component {
     initializeFirebase(login, logout);
   }
   render() {
-    const { authenticated, authenticating } = this.props;
+    const { authenticated, authenticating, name } = this.props;
     if (authenticating) return <Loading />;
     if (!authenticated) return <Login />;
-    return <Authenticated />;
+    return <Authenticated
+      name={name}
+    />;
   }
 }
 App.propTypes = {
@@ -24,11 +26,16 @@ App.propTypes = {
   authenticating: PropTypes.bool.isRequired,
   login: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
+  name: PropTypes.string,
+};
+App.defaultProps = {
+  name: null,
 };
 export default connect(
   state => ({
     authenticated: fromAuth.getAuthenticated(state),
     authenticating: fromAuth.getAuthenticating(state),
+    name: fromAuth.getName(state),
   }),
   {
     login: fromAuth.login,

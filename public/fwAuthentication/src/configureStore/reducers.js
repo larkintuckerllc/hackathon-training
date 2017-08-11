@@ -1,10 +1,8 @@
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
-import authDone from '../ducks/authDone';
-import authenticated from '../ducks/authenticated';
+import auth from '../ducks/auth';
 
 export default combineReducers({
-  authDone,
-  authenticated,
+  auth,
   form: formReducer,
 });

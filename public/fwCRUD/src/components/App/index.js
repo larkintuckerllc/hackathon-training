@@ -10,7 +10,10 @@ import Login from './Login';
 class App extends Component {
   componentDidMount() {
     const { login, logout } = this.props;
-    initializeFirebase(login, logout);
+    initializeFirebase({
+      login,
+      logout,
+    });
   }
   render() {
     const { authenticated, authenticating, name } = this.props;

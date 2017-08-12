@@ -2,15 +2,17 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import * as fromAuth from '../../ducks/auth';
-import initializeFirebase from '../../apis/initializeFirebase';
+import * as fromFolders from '../../ducks/folders';
+import { connectToStore } from '../../apis/firebase';
 import Authenticated from './Authenticated';
 import Loading from './Loading';
 import Login from './Login';
 
 class App extends Component {
   componentDidMount() {
-    const { login, logout } = this.props;
-    initializeFirebase({
+    const { addFolderSuccess, login, logout } = this.props;
+    connectToStore({
+      addFolderSuccess,
       login,
       logout,
     });
@@ -25,6 +27,7 @@ class App extends Component {
   }
 }
 App.propTypes = {
+  addFolderSuccess: PropTypes.func.isRequired,
   authenticated: PropTypes.bool.isRequired,
   authenticating: PropTypes.bool.isRequired,
   login: PropTypes.func.isRequired,
@@ -41,6 +44,7 @@ export default connect(
     name: fromAuth.getName(state),
   }),
   {
+    addFolderSuccess: fromFolders.addFolderSuccess,
     login: fromAuth.login,
     logout: fromAuth.logout,
   },

@@ -1,19 +1,22 @@
 import firebase from 'firebase';
 import { FIREBASE_CONFIG } from '../strings';
 
-export default ({
+firebase.initializeApp(FIREBASE_CONFIG);
+const database = firebase.database();
+export const foldersRef = database.ref('folders');
+export const connectToStore = ({
+  addFolderSuccess,
   login,
   logout,
 }) => {
-  firebase.initializeApp(FIREBASE_CONFIG);
-  const database = firebase.database();
-  const foldersRef = database.ref('folders');
   firebase.auth().onAuthStateChanged((user) => {
     if (user !== null) {
       login(user.displayName);
       foldersRef.on('child_added', data => {
-        const folder = data.val();
-        window.console.log(folder);
+        addFolderSuccess({
+          id: data.key,
+          ...(data.val()),
+        });
       });
     }
     else {

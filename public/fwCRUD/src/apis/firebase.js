@@ -4,11 +4,12 @@ import { FIREBASE_CONFIG } from '../strings';
 firebase.initializeApp(FIREBASE_CONFIG);
 const database = firebase.database();
 export const foldersRef = database.ref('folders');
-export const connectToStore = ({
+export const connectToFirebase = ({
   addFolderSuccess,
   login,
   logout,
   removeFolderSuccess,
+  updateFolderSuccess,
 }) => {
   firebase.auth().onAuthStateChanged((user) => {
     if (user !== null) {
@@ -21,6 +22,12 @@ export const connectToStore = ({
       });
       foldersRef.on('child_removed', data => {
         removeFolderSuccess({
+          id: data.key,
+          ...(data.val()),
+        });
+      });
+      foldersRef.on('child_changed', data => {
+        updateFolderSuccess({
           id: data.key,
           ...(data.val()),
         });

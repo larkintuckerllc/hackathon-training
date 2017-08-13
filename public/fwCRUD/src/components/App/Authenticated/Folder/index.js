@@ -1,6 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import Update from './Update';
 
-const Folder = () => (
-  <div>FOLDER</div>
+const Folder = ({ closeFolder }) => (
+  <div>
+    <div onClick={closeFolder}>Back</div>
+    <Update
+      closeFolder={closeFolder}
+    />
+  </div>
 );
+Folder.propTypes = {
+  closeFolder: PropTypes.func.isRequired,
+};
 export default Folder;

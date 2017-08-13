@@ -1,4 +1,3 @@
-import { combineReducers } from 'redux';
 import { createAction,  handleActions } from 'redux-actions';
 import { ACTION_PREFIX } from '../strings';
 

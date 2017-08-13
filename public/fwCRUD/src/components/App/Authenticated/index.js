@@ -3,7 +3,6 @@ import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import * as fromFolders from '../../../ducks/folders';
 import * as fromFolderOpen from '../../../ducks/folderOpen';
-import Add from './Add';
 import Folder from './Folder';
 import Folders from './Folders';
 import Frame from './Frame';
@@ -11,25 +10,21 @@ import Logout from './Logout';
 import Welcome from './Welcome';
 
 // FOR PRODUCTION NEED TO LOCK FOLDERS WHEN EDITTING
-const Authenticated = ({ name, folders, isFolderOpen, openFolder, removeFolder }) => (
+const Authenticated = ({ closeFolder, name, folders, isFolderOpen, openFolder, removeFolder }) => (
   <Frame>
     <Welcome name={name} />
     <Logout />
     {isFolderOpen ?
-    <div>
-      <Folder />
-    </div> :
-    <div>
-      <Add />
-      <Folders
-        folders={folders}
-        openFolder={openFolder}
-        removeFolder={removeFolder}
-      />
-    </div>}
+    <Folder closeFolder={closeFolder} /> :
+    <Folders
+      folders={folders}
+      openFolder={openFolder}
+      removeFolder={removeFolder}
+    />}
   </Frame>
 );
 Authenticated.propTypes = {
+  closeFolder: PropTypes.func.isRequired,
   folders: PropTypes.array.isRequired,
   isFolderOpen: PropTypes.bool.isRequired,
   name: PropTypes.string.isRequired,
@@ -42,6 +37,7 @@ export default connect(
     isFolderOpen: fromFolderOpen.getIsFolderOpen(state),
   }),
   {
+    closeFolder: fromFolderOpen.closeFolder,
     openFolder: fromFolderOpen.openFolder,
     removeFolder: fromFolders.removeFolder,
   },

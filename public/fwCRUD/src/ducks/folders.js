@@ -58,6 +58,7 @@ export default combineReducers({
 });
 const getFoldersIds = state => state.folders.ids;
 const getFoldersById = state => state.folders.byId;
+export const getFolder = (state, id) => state.folders.byId[id];
 export const getFolders = createSelector(
   [getFoldersIds, getFoldersById],
   (foldersIds, foldersById) => foldersIds.map(id => foldersById[id]),

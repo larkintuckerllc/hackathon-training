@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm, reset } from 'redux-form';
 import { connect } from 'react-redux';
-import * as fromFolders from '../../../ducks/folders';
+import * as fromFolders from '../../../../ducks/folders';
 
-// TODO: THINK ABOUT ERRORS
 const ADD_FORM = 'ADD_FORM';
 const Add = ({ handleSubmit, valid }) => (
   <form onSubmit={handleSubmit}>

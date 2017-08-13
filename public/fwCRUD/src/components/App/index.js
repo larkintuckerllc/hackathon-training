@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import * as fromAuth from '../../ducks/auth';
 import * as fromFolders from '../../ducks/folders';
-import { connectToStore } from '../../apis/firebase';
+import { connectToFirebase } from '../../apis/firebase';
 import Authenticated from './Authenticated';
 import Loading from './Loading';
 import Login from './Login';
@@ -15,12 +15,14 @@ class App extends Component {
       login,
       logout,
       removeFolderSuccess,
+      updateFolderSuccess,
     } = this.props;
-    connectToStore({
+    connectToFirebase({
       addFolderSuccess,
       login,
       logout,
       removeFolderSuccess,
+      updateFolderSuccess,
     });
   }
   render() {
@@ -39,6 +41,8 @@ App.propTypes = {
   login: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
   name: PropTypes.string,
+  removeFolderSuccess: PropTypes.func.isRequired,
+  updateFolderSuccess: PropTypes.func.isRequired,
 };
 App.defaultProps = {
   name: null,
@@ -54,5 +58,6 @@ export default connect(
     login: fromAuth.login,
     logout: fromAuth.logout,
     removeFolderSuccess: fromFolders.removeFolderSuccess,
+    updateFolderSuccess: fromFolders.updateFolderSuccess,
   },
 )(App);

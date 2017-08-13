@@ -10,11 +10,17 @@ import Login from './Login';
 
 class App extends Component {
   componentDidMount() {
-    const { addFolderSuccess, login, logout } = this.props;
+    const {
+      addFolderSuccess,
+      login,
+      logout,
+      removeFolderSuccess,
+    } = this.props;
     connectToStore({
       addFolderSuccess,
       login,
       logout,
+      removeFolderSuccess,
     });
   }
   render() {
@@ -47,5 +53,6 @@ export default connect(
     addFolderSuccess: fromFolders.addFolderSuccess,
     login: fromAuth.login,
     logout: fromAuth.logout,
+    removeFolderSuccess: fromFolders.removeFolderSuccess,
   },
 )(App);

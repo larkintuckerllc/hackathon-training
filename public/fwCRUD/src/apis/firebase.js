@@ -8,6 +8,7 @@ export const connectToStore = ({
   addFolderSuccess,
   login,
   logout,
+  removeFolderSuccess,
 }) => {
   firebase.auth().onAuthStateChanged((user) => {
     if (user !== null) {
@@ -18,10 +19,17 @@ export const connectToStore = ({
           ...(data.val()),
         });
       });
+      foldersRef.on('child_removed', data => {
+        removeFolderSuccess({
+          id: data.key,
+          ...(data.val()),
+        });
+      });
     }
     else {
       logout();
       foldersRef.off('child_added');
+      foldersRef.off('child_removed');
     }
   });
 }

@@ -4,6 +4,11 @@ html {
 *, *:before, *:after {
   box-sizing: inherit;
 }
+body {
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 15px;
+  line-height: 1.42857143;
+}
 @media (min-width: 1200px) {
   .container {
     width: 1170px;
@@ -45,4 +50,12 @@ button:not([disabled]):hover {
 button[disabled] {
   opacity: 0.6;
   cursor: not-allowed;
+}
+input {
+  outline: none;
+  padding: 12px 20px;
+  border: 1px solid #aaa;
+}
+input:focus {
+  border: 1px solid #555;
 }

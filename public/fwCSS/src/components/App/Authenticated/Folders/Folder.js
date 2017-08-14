@@ -20,7 +20,7 @@ class Folder extends Component {
     return(
       <li>
         <span onClick={this.handleOpenClick}>{folder.name}</span>
-        <span onClick={this.handleRemoveClick}> [ X ]</span>
+        <i style={{ fontSize: '30px', color: 'red' }} className="material-icons" onClick={this.handleRemoveClick}>delete</i>
       </li>
     );
   }

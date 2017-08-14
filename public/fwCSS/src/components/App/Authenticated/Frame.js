@@ -2,7 +2,7 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 
 const Frame = ({ children }) => (
-  <div>
+  <div className="container">
     {children}
   </div>
 );

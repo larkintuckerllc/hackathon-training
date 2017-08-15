@@ -4,15 +4,16 @@ import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import * as fromFolderOpen from '../../../../ducks/folderOpen';
 import * as fromFolders from '../../../../ducks/folders';
+import ValidatedTextInput from '../../../ValidatedTextInput';
 
 const UPDATE_FORM = 'UPDATE_FORM';
 const Update = ({ handleSubmit, pristine, valid }) => (
   <form onSubmit={handleSubmit}>
     <Field
-      component="input"
+      component={ValidatedTextInput}
+      disabled={false}
       name="name"
-      placeholder="name"
-      type="text"
+      props={{ placeholder: 'name' }}
     />
     <button
       disabled={!valid || pristine}
